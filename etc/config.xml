@@ -32,6 +32,7 @@
                 <allowspecific>0</allowspecific>
                 <sort_order>100</sort_order>
                 <group>offline</group>
+                <instructions></instructions>
                 <used_totals>subtotal,tax,shipping</used_totals>
             </msp_cashondelivery>
         </payment>

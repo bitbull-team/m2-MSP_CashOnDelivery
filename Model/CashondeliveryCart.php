@@ -22,6 +22,7 @@ namespace MSP\CashOnDelivery\Model;
 
 use \Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use MSP\CashOnDelivery\Api\CashondeliveryCartInterface;
 use MSP\CashOnDelivery\Api\CashondeliveryInterface;
 
@@ -31,15 +32,22 @@ class CashondeliveryCart implements CashondeliveryCartInterface
     protected $checkoutSession;
     protected $cashondeliveryInterface;
     protected $quote = null;
+    /**
+     * Core store config
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    protected $scopeConfig;
 
     public function __construct(
         PriceCurrencyInterface $priceCurrencyInterface,
         CashondeliveryInterface $cashondeliveryInterface,
-        CheckoutSession $checkoutSession
+        CheckoutSession $checkoutSession,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->priceCurrencyInterface = $priceCurrencyInterface;
         $this->checkoutSession = $checkoutSession;
         $this->cashondeliveryInterface = $cashondeliveryInterface;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -80,13 +88,7 @@ class CashondeliveryCart implements CashondeliveryCartInterface
      */
     public function getFeeLabel()
     {
-        $amount = $this->getAmount();
-        $taxAmount = $this->getTaxAmount();
-
-        return __('You will be charged by an extra fee of %1 (+%2 taxes)', [
-            $this->priceCurrencyInterface->format($amount),
-            $this->priceCurrencyInterface->format($taxAmount),
-        ]);
+        return $this->scopeConfig->getValue('payment/msp_cashondelivery/instructions', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
     /**

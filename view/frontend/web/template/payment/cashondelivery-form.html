@@ -31,14 +31,16 @@
         <!-- ko template: getTemplate() --><!-- /ko -->
         <!--/ko-->
 
-        <div class="msp-cashondelivery-payment-method-extrafee">
-            <span data-bind="html: extraFeeText"></span>
-        </div>
+
 
         <div class="payment-method-billing-address">
             <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
+        </div>
+
+        <div class="msp-cashondelivery-payment-method-extrafee">
+            <span data-bind="html: extraFeeText"></span>
         </div>
 
         <div class="checkout-agreements-block">

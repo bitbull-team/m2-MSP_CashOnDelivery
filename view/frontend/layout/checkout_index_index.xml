@@ -37,7 +37,7 @@
                                                             <item name="component"  xsi:type="string">MSP_CashOnDelivery/js/view/checkout/summary/cashondelivery</item>
                                                             <item name="sortOrder" xsi:type="string">35</item>
                                                             <item name="config" xsi:type="array">
-                                                                <item name="title" xsi:type="string" translate="true">Cash on delivery</item>
+                                                                <item name="title" xsi:type="string" translate="true">Contrassegno</item>
                                                             </item>
                                                         </item>
                                                     </item>

@@ -64,6 +64,9 @@
                 <field id="sort_order" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sort Order</label>
                 </field>
+                <field id="instructions" translate="label" type="textarea" sortOrder="62" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Instructions</label>
+                </field>
             </group>
         </section>
     </system>

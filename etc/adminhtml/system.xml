@@ -60,6 +60,7 @@
                 <field id="import" translate="label" type="MSP\CashOnDelivery\Block\Adminhtml\Form\Field\Import" sortOrder="110" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Import</label>
                     <backend_model>MSP\CashOnDelivery\Model\Config\Backend\Table</backend_model>
+                    <upload_dir config="system/filesystem/media" scope_info="1">msp</upload_dir>
                 </field>
                 <field id="sort_order" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sort Order</label>

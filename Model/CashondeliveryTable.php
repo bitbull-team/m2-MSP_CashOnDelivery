@@ -121,9 +121,8 @@ class CashondeliveryTable extends AbstractModel implements CashondeliveryTableIn
      */
     public function saveFromFile($fileName)
     {
-        $tmpDirectory = $this->filesystem->getDirectoryRead(DirectoryList::SYS_TMP);
-        $path = $tmpDirectory->getRelativePath($fileName);
-        $stream = $tmpDirectory->openFile($path);
+        $mediaDirectory = $this->filesystem->getDirectoryRead(DirectoryList::MEDIA);
+        $stream = $mediaDirectory->openFile(\MSP\CashOnDelivery\Model\Config\Backend\Table::UPLOAD_DIR.$fileName);
 
         $headers = $stream->readCsv();
         if ($headers === false || count($headers) < 3) {

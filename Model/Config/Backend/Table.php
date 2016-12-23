@@ -19,39 +19,65 @@
  */
 namespace MSP\CashOnDelivery\Model\Config\Backend;
 
-use Magento\Framework\App\Config\Value;
-use MSP\CashOnDelivery\Api\CashondeliveryTableInterface;
 
-class Table extends Value
+class Table extends \Magento\Config\Model\Config\Backend\File
 {
+    /**
+     * @var \MSP\CashOnDelivery\Api\CashondeliveryTableInterface
+     */
     protected $cashondeliveryTableInterface;
 
+    const UPLOAD_DIR = '/msp/';
+
+    /**
+     * @param \Magento\Framework\Model\Context $context
+     * @param \Magento\Framework\Registry $registry
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $config
+     * @param \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList
+     * @param \Magento\MediaStorage\Model\File\UploaderFactory $uploaderFactory
+     * @param \Magento\Config\Model\Config\Backend\File\RequestData\RequestDataInterface $requestData
+     * @param \Magento\Framework\Filesystem $filesystem
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource
+     * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection
+     * @param array $data
+     * @para \MSP\CashOnDelivery\Api\CashondeliveryTableInterface $cashondeliveryTableInterface
+     */
     public function __construct(
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
         \Magento\Framework\App\Config\ScopeConfigInterface $config,
         \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
-        CashondeliveryTableInterface $cashondeliveryTableInterface,
+        \Magento\MediaStorage\Model\File\UploaderFactory $uploaderFactory,
+        \Magento\Config\Model\Config\Backend\File\RequestData\RequestDataInterface $requestData,
+        \Magento\Framework\Filesystem $filesystem,
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        \MSP\CashOnDelivery\Api\CashondeliveryTableInterface $cashondeliveryTableInterface,
         array $data = []
+
+
     ) {
-        parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);
         $this->cashondeliveryTableInterface = $cashondeliveryTableInterface;
+        parent::__construct($context, $registry, $config, $cacheTypeList,$uploaderFactory, $requestData, $filesystem, $resource, $resourceCollection, $data);
+
     }
 
-    public function afterSave()
+    public function beforeSave()
     {
-        // @codingStandardsIgnoreStart
-        if (empty($_FILES['groups']['tmp_name']['msp_cashondelivery']['fields']['import']['value'])) {
-            return $this;
-        }
+        $result = parent::beforeSave();
 
-        $csvFile = $_FILES['groups']['tmp_name']['msp_cashondelivery']['fields']['import']['value'];
-        // @codingStandardsIgnoreEnd
+        $this->cashondeliveryTableInterface->saveFromFile($result->getData('value'));
 
-        $this->cashondeliveryTableInterface->saveFromFile($csvFile);
+        return $result;
+    }
 
-        return parent::afterSave();
+    /**
+     * Getter for allowed extensions of uploaded files
+     *
+     * @return array
+     */
+    protected function _getAllowedExtensions()
+    {
+        return ['csv'];
     }
 }

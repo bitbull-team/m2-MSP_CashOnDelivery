@@ -66,7 +66,9 @@ class Table extends \Magento\Config\Model\Config\Backend\File
     {
         $result = parent::beforeSave();
 
-        $this->cashondeliveryTableInterface->saveFromFile($result->getData('value'));
+        if(!empty($result->getData('value'))){
+            $this->cashondeliveryTableInterface->saveFromFile($result->getData('value'));
+        }
 
         return $result;
     }

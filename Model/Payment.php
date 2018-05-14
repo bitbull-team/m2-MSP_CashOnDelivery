@@ -21,6 +21,7 @@
 namespace MSP\CashOnDelivery\Model;
 
 use Magento\Payment\Model\Method\AbstractMethod;
+use Magento\Framework\DataObject;
 
 class Payment extends AbstractMethod
 {
@@ -32,4 +33,33 @@ class Payment extends AbstractMethod
     protected $_infoBlockType = 'MSP\CashOnDelivery\Block\Info\CashOnDelivery';
 
     protected $_isOffline = true;
+
+    /**
+     * Check whether payment method can be used
+     *
+     * @param \Magento\Quote\Api\Data\CartInterface|null $quote
+     * @return bool
+     */
+    public function isAvailable(\Magento\Quote\Api\Data\CartInterface $quote = null)
+    {
+        $parent = parent::isAvailable($quote);
+
+        $checkResult = new DataObject();
+        $checkResult->setData('is_available', $parent);
+
+        // Exclude payment if shipping method select is in backend list
+        $storeId = $quote->getStoreId();
+        $excludeShippingMethod = $this->getConfigData('exclude_shipping_method', $storeId);
+        $excludeShippingMethod = explode(",", $excludeShippingMethod);
+
+        $quoteShippingAddress = $quote->getShippingAddress();
+        $shippingMethod = $quoteShippingAddress->getShippingMethod();
+
+        if(in_array($shippingMethod, $excludeShippingMethod))
+        {
+            $checkResult->setData('is_available', false);
+        }
+
+        return $checkResult->getData('is_available');
+    }
 }

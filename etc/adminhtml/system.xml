@@ -68,6 +68,10 @@
                 <field id="instructions" translate="label" type="textarea" sortOrder="62" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Instructions</label>
                 </field>
+                <field id="exclude_shipping_method" translate="label" type="multiselect" sortOrder="63" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Disable with shipping method(s)</label>
+                    <source_model>Magento\Shipping\Model\Config\Source\Allmethods</source_model>
+                </field>
             </group>
         </section>
     </system>
